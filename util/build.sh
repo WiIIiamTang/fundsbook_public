@@ -8,6 +8,8 @@ else
     launcher_spec="launcher/launcher.spec"
 fi
 
+launcher_updater_spec="launcher-updater/launcher-updater.spec"
+
 if [[ $1 == "app" ]]; then
     echo "Building app:"
     pyinstaller $app_spec -y --clean
@@ -16,11 +18,17 @@ elif [[ $1 == "launcher" ]]; then
     echo "Building launcher:"
     pyinstaller $launcher_spec -y --clean
     echo "Done building launcher"
+elif [[ $1 == "launcher_updater" ]]; then
+    echo "Building launcher_updater:"
+    pyinstaller $launcher_updater_spec -y --clean
+    echo "Done building launcher_updater"
 else
     echo "Building all..."
     echo "Building app:"
     pyinstaller $app_spec -y --clean
     echo "Building launcher:"
     pyinstaller $launcher_spec -y --clean
+    echo "Building launcher_updater:"
+    pyinstaller $launcher_updater_spec -y --clean
     echo "Done building all"
 fi

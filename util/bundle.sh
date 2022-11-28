@@ -13,7 +13,6 @@ echo "Bundling $release_folder to releases"
 rm -rf release/$release_folder
 mkdir release/$release_folder
 
-cp -r dist/launcher release/$release_folder
-cp -r dist/app release/$release_folder
+cp -r dist/* release/$release_folder
 
 python util/create_shortcut_windows.py "fundsbook.lnk" "release/$release_folder/launcher/launcher.exe" "release/$release_folder"
