@@ -12,7 +12,8 @@ elif [[ $1 == 'build' ]]; then
     ./util/bundle.sh
 elif [[ $1 == 'test' ]]; then
     echo "Running tests"
-    python -m unittest discover -s tests -p '*_test.py'
+    # run tests with pytest
+    pytest tests
 else
     echo "Invalid option"
 fi
