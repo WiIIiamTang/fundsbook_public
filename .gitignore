@@ -1,0 +1,13 @@
+.vscode
+.env
+__pycache__
+
+*.xlsx
+*.xlsm
+*.lnk
+
+dist
+build
+release
+tmp
+*/logs/*.txt

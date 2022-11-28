@@ -1,0 +1,22 @@
+{
+    "logging": {
+        "saveLogs": true,
+        "format": "%(asctime)s [%(levelname)s] %(message)s",
+        "streamToConsole": true,
+        "level": 20
+    },
+    "windowFixedSize": true,
+    "windowDimensions": [
+        600,
+        720
+    ],
+    "defaultWorkbookName": "FundsBook.xlsm",
+    "driver": "chrome",
+    "startDriverOnStartup": false,
+    "defaultLang": "en",
+    "runFunds": true,
+    "runRankings": true,
+    "runTop50": true,
+    "exportDataAtEnd": false,
+    "requestPause": 5
+}

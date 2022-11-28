@@ -1,0 +1,54 @@
+{
+    "workbook-intro": {
+        "Choose the workbook and click run to start the scraper."
+        : "Choisissez un classeur Excel et appuyez sur exécuter pour commencer le web scraper.",
+        "Choose excel workbook (.xlsx)"
+        : "Choisissez un classeur Excel (.xlsx)",
+        "Selected file"
+        : "Fichier sélectionné"
+    },
+    "core": {
+        "Run scraper and update sheets"
+        : "Exécuter le web scraper et mettre à jour les feuilles",
+        "Start web driver"
+        : "Démarrer le driver",
+        "Stop web driver"
+        : "Arrêter le driver",
+        "Progress"
+        : "Progrès",
+        "Stop"
+        : "Arreter"
+    },
+    "buy-funds": {
+        "Buy funds"
+        : "Acheter des fonds",
+        "Fund id"
+        : "id du fonds",
+        "Amount $"
+        : "Montant $",
+        "Date"
+        : "Date",
+        "Buy"
+        : "Acheter"
+    },
+    "settings": {
+        "Start driver automatically"
+        : "Démarrer le driver automatiquement",
+        "Settings (**requires restart)"
+        : "Paramètres (**nécessite un démarrage)",
+        "**Start driver automatically"
+        : "**Démarrer le driver automatiquement",
+        "Export data to JSON at end of updates"
+        : "Sauvegarder les données en format JSON à la fin des mises à jour",
+        "Run updates on Funds sheet (基金日记)"
+        : "Mettre à jour la feuille des fonds",
+        "Run updates on Rankings sheet (基金排队)"
+        : "Mettre à jour la feuille des classements",
+        "Run updates on all top50 sheets (top50)"
+        : "Mettre à jour les feuilles top50",
+        "**Web scraper pause duration between requests"
+        : "**Pause entre les requêtes du driver",
+        "**Language"
+        : "**Langue"
+    }
+}
