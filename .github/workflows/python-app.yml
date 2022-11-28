@@ -95,6 +95,9 @@ jobs:
           name: release-artifact
 
       - uses: actions/checkout@v3
+      
+      - name: Display structure of downloaded files
+        run: ls -R
 
       - name: Archive release
         uses: thedoctor0/zip-release@main
@@ -103,8 +106,8 @@ jobs:
           filename: "fundbook_release.zip"
           path: fundbook_release
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Display files again
+        run: ls -l
 
       # - name: Release to Github
       #   uses: softprops/action-gh-release@v1
