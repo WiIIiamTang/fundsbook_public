@@ -89,7 +89,6 @@ jobs:
     # if: github.ref == 'refs/heads/release'
     # steps to download the artifact and upload it to the release
     steps:
-      - uses: actions/checkout@v3
       - name: Download release artifact
         uses: actions/download-artifact@v3
         with:
@@ -103,7 +102,6 @@ jobs:
         with:
           type: "zip"
           filename: "fundbook_release.zip"
-          path: fundbook_release
 
       - name: Display files again
         run: ls -l
@@ -111,7 +109,7 @@ jobs:
       # - name: Release to Github
       #   uses: softprops/action-gh-release@v1
       #   with:
-      #     files: release/fundbook_release
+      #     files: fundbook_release.zip
       #     tag_name: ${{ github.ref }}
       #     name: ${{ github.ref }}
       #     body: ${{ github.ref }}
