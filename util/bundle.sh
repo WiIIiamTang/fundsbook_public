@@ -12,7 +12,7 @@ echo "Bundling $release_folder to releases"
 
 # create the releases folder if it doesn't exist
 if [ ! -d "releases" ]; then
-    mkdir releases
+    mkdir release
 fi
 rm -rf release/$release_folder
 mkdir release/$release_folder
