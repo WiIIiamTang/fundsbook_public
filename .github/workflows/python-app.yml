@@ -101,7 +101,7 @@ jobs:
         with:
           type: "zip"
           filename: "fundbook_release.zip"
-          path: release/fundbook_release
+          path: fundbook_release
 
       - name: Display structure of downloaded files
         run: ls -R
