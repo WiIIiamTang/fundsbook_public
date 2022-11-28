@@ -51,17 +51,17 @@ jobs:
         run: ./run.sh build
         shell: bash
 
-      - name: Archive release build
-        uses: thedoctor0/zip-release@main
-        with:
-          type: "zip"
-          filename: "fundbook_release.zip"
-          path: release/fundbook_release
+      # - name: Archive release build
+      #   uses: thedoctor0/zip-release@main
+      #   with:
+      #     type: "zip"
+      #     filename: "fundbook_release.zip"
+      #     path: release/fundbook_release
 
       - uses: actions/upload-artifact@v3
         with:
           name: release-artifact
-          path: fundbook_release.zip
+          path: release/fundbook_release
 
   postbuild-test:
     needs: ["build"]
@@ -81,3 +81,38 @@ jobs:
 
       - name: Run tests
         run: echo "This will run more tests"
+
+  release-if-tagged:
+    needs: ["postbuild-test"]
+    runs-on: ubuntu-latest
+    # Only run this job on the release branch
+    # if: github.ref == 'refs/heads/release'
+    # steps to download the artifact and upload it to the release
+    steps:
+      - name: Download release artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: release-artifact
+
+      - uses: actions/checkout@v3
+
+      - name: Archive release
+        uses: thedoctor0/zip-release@main
+        with:
+          type: "zip"
+          filename: "fundbook_release.zip"
+          path: release/fundbook_release
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      # - name: Release to Github
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: release/fundbook_release
+      #     tag_name: ${{ github.ref }}
+      #     name: ${{ github.ref }}
+      #     body: ${{ github.ref }}
+      #     draft: false
+      #     prerelease: false
+      #     token: ${{ secrets.GITHUB_TOKEN }}
