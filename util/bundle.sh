@@ -15,4 +15,4 @@ mkdir release/$release_folder
 
 cp -r dist/* release/$release_folder
 
-python util/create_shortcut_windows.py "fundsbook.lnk" "release/$release_folder/launcher/launcher.exe" "release/$release_folder"
+python util/create_shortcut_windows.py "Start Fundsbook.lnk" "release/$release_folder/launcher/launcher.exe" "release/$release_folder"

@@ -13,18 +13,20 @@ from PyQt5.QtWidgets import (
 )
 
 from ..updater import Updater
-from ..constants import BASE_PATH, PROD
+from ..constants import BASE_PATH, PROD, LAUNCHER_INTERNAL_VERSION, APP_INTERNAL_VERSION
 
 
 class MainUi(QMainWindow):
     def __init__(self, **kwargs):
         super().__init__()
         self.updater = Updater(
-            "https://api.github.com/repos/yourusername/yourrepo/releases/latest"
+            "https://api.github.com/repos/WiIIiamTang/fundsbook_public/releases/latest"
         )
-        self.version = "0.0.1"
-        self.setWindowTitle("Launcher")
-        self.setFixedSize(300, 300)
+        self.app_version = APP_INTERNAL_VERSION
+        self.lu_version = LAUNCHER_INTERNAL_VERSION
+        self.channel = "stable"
+        self.setWindowTitle("Fundbook Launcher")
+        self.setFixedSize(300, 400)
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle = self.frameGeometry()
         qtRectangle.moveCenter(centerPoint)
@@ -54,20 +56,61 @@ class MainUi(QMainWindow):
         self.close_btn.clicked.connect(self.close_launcher)
         display_layout.addWidget(self.close_btn)
 
-        self.info = QLabel(self.version)
+        self.blank_info_box = QLabel("")
+        display_layout.addWidget(self.blank_info_box)
+        self.blank_info_box.setFont(QFont("Arial", 10))
+        display_layout.addWidget(self.blank_info_box)
+
+        self.install_update_btn = QPushButton("Install update")
+        self.install_update_btn.clicked.connect(self.install_update)
+        display_layout.addWidget(self.install_update_btn)
+        self.install_update_btn.hide()
+
+        self.formatted_info_text = f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
+             \nLatest version: {'-' if self.updater.repo_version is None else self.updater.repo_version}\
+             \nChannel: {self.channel}"
+        self.info = QLabel(self.formatted_info_text)
         self.info.setWordWrap(True)
-        self.info.setFont(QFont("Arial", 11))
+        self.info.setFont(QFont("Arial", 8))
         display_layout.addWidget(self.info)
 
         self.display.setLayout(display_layout)
         self.generalLayout.addWidget(self.display)
 
+        self.check_update_btn_action()
+
     def close_launcher(self):
         self.close()
 
+    def install_update(self):
+        self.blank_info_box.setText("Installing update in progress...")
+        r = self.updater.install_update()
+        self.blank_info_box.setText(r)
+        self.install_update_btn.hide()
+        self.check_update_btn_action()
+
     def check_update_btn_action(self):
-        self.updater.check()
         print("checking for updates")
+        self.updater.check()
+        if self.updater.new_app_update or self.updater.new_lu_update:
+            self.info.setText(
+                f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
+                 \nLatest version: {self.updater.repo_version}\
+                 \nChannel: {self.channel}"
+            )
+            self.blank_info_box.setText(
+                f"Update available:\
+                \n{'- App' if self.updater.new_app_update else ''}\
+                \n{'- Launcher (requires restart)' if self.updater.new_lu_update else ''}"
+            )
+            self.install_update_btn.show()
+        else:
+            self.info.setText(
+                f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
+                 \nLatest version: {self.updater.repo_version}\
+                 \nChannel: {self.channel}"
+            )
+            self.blank_info_box.setText("No updates available")
 
     def start_btn_action(self):
         if PROD:
