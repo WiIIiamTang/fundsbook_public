@@ -27,7 +27,7 @@ class WorkbookManager:
     ):  # str='FundsBook.xlsx'
         self.path = path
         self.backup = backup
-        # self.wb = load_workbook(path, read_only=False, keep_vba=True)
+        self.wb = load_workbook(path, read_only=False, keep_vba=True)
         self.missing_funds = None
         self.ranking_ids = None
 
