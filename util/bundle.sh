@@ -11,7 +11,7 @@ fi
 echo "Bundling $release_folder to releases"
 
 # create the releases folder if it doesn't exist
-if [ ! -d "releases" ]; then
+if [ ! -d "release" ]; then
     mkdir release
 fi
 rm -rf release/$release_folder
