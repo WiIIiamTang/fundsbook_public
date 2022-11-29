@@ -8,14 +8,15 @@ from time import time, sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.common.exceptions import TimeoutException
 
 from ..constants import BASE_PATH
 
-flag = 0x08000000  # No-Window flag
-webdriver.common.service.subprocess.Popen = functools.partial(
-    subprocess.Popen, creationflags=flag
-)
+# flag = 0x08000000  # No-Window flag
+# webdriver.common.service.subprocess.Popen = functools.partial(
+#     subprocess.Popen, creationflags=flag
+# )
 
 
 class EastMoneyFundScraper:
@@ -99,9 +100,12 @@ class EastMoneyFundScraper:
             # options.binary_location = driver_path
             logging.info(driver_path)
             # logging.info(options)
+            chrome_service = ChromeService(driver_path)
+            chrome_service.creation_flags = subprocess.CREATE_NO_WINDOW
             self.driver = webdriver.Chrome(
                 options=options,
                 executable_path=os.path.join(BASE_PATH, "drivers", driver_path),
+                service=chrome_service,
             )
             self.driver.set_page_load_timeout(self.page_timeout)
             self.is_on = True
