@@ -7,7 +7,7 @@ if PROD:
 else:
     BASE_PATH = os.path.join(os.getcwd(), "launcher")
 
-# This should be the only place where the lu version is defined
+# launcher/VERSION should be the only place where the lu version is defined
 with open(os.path.join(BASE_PATH, "VERSION")) as f:
     LAUNCHER_INTERNAL_VERSION = f.read().strip()
 

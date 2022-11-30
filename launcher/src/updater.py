@@ -1,6 +1,9 @@
 import requests
 import subprocess
 import os
+import traceback
+import stat
+import pathlib
 import zipfile
 import shutil
 from packaging import version
@@ -24,6 +27,12 @@ class Updater:
 
     def check(self):
         try:
+            with open(os.path.join(BASE_PATH, "VERSION")) as f:
+                self.local_version = f.read().strip()
+            with open(
+                os.path.join(os.path.join(BASE_PATH, ".."), "app", "VERSION"), "r"
+            ) as f:
+                self.app_version = f.read().strip()
             print(f"Checking for launcher update at {self.repo_url}")
             r = requests.get(self.repo_url)
             if r.status_code == 200:
@@ -78,31 +87,42 @@ class Updater:
             return False
         try:
             # rename the old app folder
-            parent = os.path.join(BASE_PATH, "..")
+            parent = pathlib.Path(BASE_PATH).parent.absolute()
             os.rename(
                 os.path.join(parent, "app"),
                 os.path.join(parent, "old-app"),
             )
+            # os.mkdir("app")
+
             # extract the new launcher folder
+            os.mkdir("tmp")
             with zipfile.ZipFile(os.path.join(parent, "update.zip"), "r") as zip_ref:
-                for file in zip_ref.namelist():
-                    zip_ref.extract(file, parent)
+                zip_ref.extractall(path=os.path.join(parent, "tmp"))
 
             # move the new launcher folder to the root
             shutil.move(
-                os.path.join(parent, "fundbook_release", "app"),
-                os.path.join(parent, "app"),
+                os.path.join(parent, "tmp", "app"),
+                os.path.join(parent),
             )
 
             # cleanup
+            def remove_readonly(func, path, _):
+                os.chmod(path, stat.S_IWRITE)
+                print("trying to remove again")
+                func(path)
+
+            print("Cleaning up...")
             if cleanup_downloads:
-                shutil.rmtree(os.path.join(parent, "fundbook_release"))
-            shutil.rmtree(os.path.join(parent, "old-app"))
+                print("cleaning up fundbook_release folder")
+                shutil.rmtree(os.path.join(parent, "tmp"), onerror=remove_readonly)
+            shutil.rmtree(os.path.join(parent, "old-app"), onerror=remove_readonly)
             os.remove(os.path.join(parent, "update.zip"))
 
             return True
         except Exception as e:
+            print("error while updating files.")
             print(e)
+            print(traceback.format_exc())
             return False
 
     def install_update(self):

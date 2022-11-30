@@ -83,15 +83,18 @@ class MainUi(QMainWindow):
         self.close()
 
     def install_update(self):
-        self.blank_info_box.setText("Installing update in progress...")
-        r = self.updater.install_update()
-        self.blank_info_box.setText(r)
+        self.updater.install_update()
+        print("update done, hiding button")
         self.install_update_btn.hide()
         self.check_update_btn_action()
 
     def check_update_btn_action(self):
         print("checking for updates")
         self.updater.check()
+        print(self.updater)
+        print(self.updater.new_app_update, self.updater.new_lu_update)
+        self.app_version = self.updater.app_version
+        self.lu_version = self.updater.local_version
         if self.updater.new_app_update or self.updater.new_lu_update:
             self.info.setText(
                 f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
@@ -105,6 +108,7 @@ class MainUi(QMainWindow):
             )
             self.install_update_btn.show()
         else:
+            print("no update available")
             self.info.setText(
                 f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
                  \nLatest version: {self.updater.repo_version}\

@@ -8,7 +8,9 @@ a = Analysis(
     ['launcher.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ("./VERSION", ".")
+    ],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

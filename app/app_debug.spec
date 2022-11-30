@@ -12,7 +12,8 @@ a = Analysis(
         ("drivers/*", "drivers/"),
         ("languages/*", "languages/"),
         ("./fb_config.json", "."),
-        ("logs/*", "logs/")
+        ("logs/*", "logs/"),
+        ("./VERSION", ".")
     ],
     hiddenimports=[],
     hookspath=[],
