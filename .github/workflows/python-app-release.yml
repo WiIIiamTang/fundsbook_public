@@ -1,13 +1,10 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: CI python dev
+name: release pipeline
 
 on:
   push:
-    branches: [dev]
+    branches: [release]
   pull_request:
-    branches: [dev]
+    branches: [release]
 
 jobs:
   test:
@@ -36,7 +33,7 @@ jobs:
         run: |
           pytest
         env:
-          TEST_ENV: dev
+          TEST_ENV: prod
 
   build:
     needs: ["test"]
@@ -86,37 +83,37 @@ jobs:
       - name: Run tests
         run: echo "This will run more tests"
 
-  # release-if-tagged:
-  #   needs: ["postbuild-test"]
-  #   runs-on: ubuntu-latest
-  #   # Only run this job when a tag is pushed
-  #   if: startsWith(github.ref, 'refs/tags/')
-  #   # steps to download the artifact and upload it to the release
-  #   steps:
-  #     - name: Download release artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: release-artifact
+  release-if-tagged:
+    needs: ["postbuild-test"]
+    runs-on: ubuntu-latest
+    # Only run this job when a tag is pushed
+    if: startsWith(github.ref, 'refs/tags/')
+    # steps to download the artifact and upload it to the release
+    steps:
+      - name: Download release artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: release-artifact
 
-  #     - name: Display structure of downloaded files
-  #       run: ls -R
+      - name: Display structure of downloaded files
+        run: ls -R
 
-  #     - name: Archive release
-  #       uses: thedoctor0/zip-release@main
-  #       with:
-  #         type: "zip"
-  #         filename: "fundbook_release.zip"
+      - name: Archive release
+        uses: thedoctor0/zip-release@main
+        with:
+          type: "zip"
+          filename: "fundbook_release.zip"
 
-  #     - name: Display files again
-  #       run: ls -l
+      - name: Display files again
+        run: ls -l
 
-  #     - name: Release to Github
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         files: fundbook_release.zip
-  #         tag_name: ${{ github.ref }}
-  #         name: ${{ github.ref }}
-  #         body: ${{ github.ref }}
-  #         draft: false
-  #         prerelease: false
-  #         token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release to Github
+        uses: softprops/action-gh-release@v1
+        with:
+          files: fundbook_release.zip
+          tag_name: ${{ github.ref }}
+          name: ${{ github.ref }}
+          body: ${{ github.ref }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
