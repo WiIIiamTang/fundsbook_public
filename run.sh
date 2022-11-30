@@ -14,6 +14,9 @@ elif [[ $1 == 'test' ]]; then
     echo "Running tests"
     # run tests with pytest
     pytest tests
+elif [[ $1 == 'tag' ]]; then
+    echo "Tagging release"
+    ./util/tag_release.sh $2 $3 $4 $5
 else
     echo "Invalid option"
 fi
