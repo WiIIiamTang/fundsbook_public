@@ -23,7 +23,7 @@ echo "Continue? (y/n)"
 read -r response
 
 if [[ $response == 'y' ]]; then
-    git tag $tag
+    git tag -a $tag -m "auto-tagged release $tag"
     # open the VERSION file and update the version
     echo "Updating VERSION file"
     echo "$appver-$channel.$channelver" > VERSION
