@@ -99,8 +99,11 @@ class EastMoneyFundScraper:
             )
             # options.binary_location = driver_path
             logging.info(driver_path)
+            logging.info(os.path.join(BASE_PATH, "drivers", driver_path))
             # logging.info(options)
-            chrome_service = ChromeService(driver_path)
+            chrome_service = ChromeService(
+                os.path.join(BASE_PATH, "drivers", driver_path)
+            )
             chrome_service.creation_flags = subprocess.CREATE_NO_WINDOW
             self.driver = webdriver.Chrome(
                 options=options,
