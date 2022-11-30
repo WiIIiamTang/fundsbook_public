@@ -2,9 +2,8 @@ name: release pipeline
 
 on:
   push:
-    branches: [release]
-  pull_request:
-    branches: [release]
+    tags:
+      - "**"
 
 jobs:
   test:
