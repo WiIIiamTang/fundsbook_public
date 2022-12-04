@@ -24,7 +24,7 @@ class MainUi(QMainWindow):
         )
         self.app_version = APP_INTERNAL_VERSION
         self.lu_version = LAUNCHER_INTERNAL_VERSION
-        self.channel = "stable"
+        self.channel = "alpha"
         self.setWindowTitle("Fundbook Launcher")
         self.setFixedSize(300, 400)
         centerPoint = QDesktopWidget().availableGeometry().center()

@@ -8,7 +8,7 @@ elif [[ $1 == 'launcher' ]]; then
     echo "Running launcher"
     python launcher/launcher.py
 elif [[ $1 == 'build' ]]; then
-    ./util/build.sh
+    ./util/build.sh all $2
     ./util/bundle.sh
 elif [[ $1 == 'quickbuild' ]]; then
     ./util/build.sh quick

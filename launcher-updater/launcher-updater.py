@@ -23,6 +23,8 @@ def main():
         args.use_cached,
     )
     lu.check()
+    print("Starting update...")
+    time.sleep(3)
     if lu.download():
         print("Update successful.")
         if PROD:

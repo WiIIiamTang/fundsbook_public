@@ -29,7 +29,7 @@ exe = EXE(
     a.datas,
     [],
     name='launcher-updater',
-    debug=False,
+    debug=True,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,

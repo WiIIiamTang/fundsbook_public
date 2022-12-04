@@ -55,7 +55,7 @@ class Updater:
             print(e)
             return False
 
-    def download(self, cleanup_downloads=False):
+    def download(self, cleanup_downloads=False, only_launcher=False):
         if self.new_app_update:
             if not PROD:
                 print("Not in bundled app, skipping download")
@@ -70,7 +70,10 @@ class Updater:
                         f.write(r.content)
                     print("Download complete.")
 
-                    return self.update_files(cleanup_downloads=cleanup_downloads)
+                    if not only_launcher:
+                        return self.update_files(cleanup_downloads=cleanup_downloads)
+                    else:
+                        return self.extract_launcher_updater()
                 else:
                     print("Download failed.")
                     return False
@@ -79,6 +82,38 @@ class Updater:
                 return False
         else:
             print("No update available.")
+            return False
+
+    def extract_launcher_updater(self):
+        if not PROD:
+            print("Not in bundled app, skipping update")
+            return False
+        try:
+            os.mkdir("tmp")
+            with zipfile.ZipFile(os.path.join(BASE_PATH, "update.zip"), "r") as zip_ref:
+                zip_ref.extractall(path=os.path.join(BASE_PATH, "tmp"))
+
+            # move the new launcher folder to the root
+            shutil.move(
+                os.path.join(BASE_PATH, "tmp", "launcher-updater.exe"),
+                os.path.join(BASE_PATH, ".."),
+            )
+
+            # cleanup
+            def remove_readonly(func, path, _):
+                os.chmod(path, stat.S_IWRITE)
+                print("trying to remove again")
+                func(path)
+
+            print("Cleaning up...")
+            shutil.rmtree(os.path.join(BASE_PATH, "tmp"), onerror=remove_readonly)
+            os.remove(os.path.join(BASE_PATH, "update.zip"))
+
+            return True
+        except Exception as e:
+            print("error while updating files.")
+            print(e)
+            print(traceback.format_exc())
             return False
 
     def update_files(self, cleanup_downloads=False):
@@ -128,7 +163,9 @@ class Updater:
     def install_update(self):
         if self.new_lu_update and not self.new_app_update:
             print("Installing launcher update")
+
             if PROD:
+                self.download(cleanup_downloads=True, only_launcher=True)
                 subprocess.Popen(
                     [
                         os.path.join(

@@ -1,6 +1,7 @@
 import requests
 import os
 import zipfile
+import stat
 import shutil
 from packaging import version
 
@@ -76,30 +77,44 @@ class Updater:
             print("Not in bundled app, skipping update")
             return False
         try:
+            print("Updating files...")
             # rename the old launcher folder
             os.rename(
                 os.path.join(self.BASE_PATH, "launcher"),
                 os.path.join(self.BASE_PATH, "old-launcher"),
             )
+
+            os.mkdir("tmp")
             # extract the new launcher folder
             if not self.use_cached:
                 with zipfile.ZipFile(
                     os.path.join(self.BASE_PATH, "update.zip"), "r"
                 ) as zip_ref:
                     for file in zip_ref.namelist():
-                        zip_ref.extract(file, self.BASE_PATH)
+                        zip_ref.extract(file, os.path.join(self.BASE_PATH, "tmp"))
 
             # move the new launcher folder to the root
             shutil.move(
-                os.path.join(self.BASE_PATH, "fundbook_release", "launcher"),
+                os.path.join(self.BASE_PATH, "tmp", "launcher"),
                 os.path.join(self.BASE_PATH, "launcher"),
             )
 
             # cleanup
+            def remove_readonly(func, path, _):
+                os.chmod(path, stat.S_IWRITE)
+                print("trying to remove again")
+                func(path)
+
             if self.cleanup_downloads:
-                shutil.rmtree(os.path.join(self.BASE_PATH, "fundbook_release"))
+                shutil.rmtree(
+                    os.path.join(self.BASE_PATH, "tmp"),
+                    onerror=remove_readonly,
+                )
             if not self.use_cached:
-                shutil.rmtree(os.path.join(self.BASE_PATH, "old-launcher"))
+                shutil.rmtree(
+                    os.path.join(self.BASE_PATH, "old-launcher"),
+                    onerror=remove_readonly,
+                )
                 os.remove(os.path.join(self.BASE_PATH, "update.zip"))
 
             return True
