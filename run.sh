@@ -10,6 +10,11 @@ elif [[ $1 == 'launcher' ]]; then
 elif [[ $1 == 'build' ]]; then
     ./util/build.sh
     ./util/bundle.sh
+elif [[ $1 == 'quickbuild' ]]; then
+    ./util/build.sh quick
+    ./util/bundle.sh
+elif [[ $1 == 'clean' ]]; then
+    ./util/clean.sh
 elif [[ $1 == 'test-dev' ]]; then
     echo "Running tests"
     # run tests with pytest

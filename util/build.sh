@@ -22,6 +22,15 @@ elif [[ $1 == "launcher_updater" ]]; then
     echo "Building launcher_updater:"
     pyinstaller $launcher_updater_spec -y --clean
     echo "Done building launcher_updater"
+elif [[ $1 == "quick" ]]; then
+    echo "Building all (not clean)..."
+    echo "Building app:"
+    pyinstaller $app_spec -y
+    echo "Building launcher:"
+    pyinstaller $launcher_spec -y
+    echo "Building launcher_updater:"
+    pyinstaller $launcher_updater_spec -y
+    echo "Done building all"
 else
     echo "Building all..."
     echo "Building app:"
