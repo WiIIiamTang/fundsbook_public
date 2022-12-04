@@ -23,7 +23,6 @@ echo "Continue? (y/n)"
 read -r response
 
 if [[ $response == 'y' ]]; then
-    git tag -a $tag -m "auto-tagged release $tag"
     # open the VERSION file and update the version
     echo "Updating VERSION file"
     echo "$appver-$channel.$channelver" > VERSION
@@ -32,6 +31,9 @@ if [[ $response == 'y' ]]; then
     echo "Updating launcher VERSION file"
     echo "$launcherapp" > VERSION
     mv -f VERSION launcher/VERSION
+    git add .
+    git commit -m "bump to release $tag"
+    git tag -a $tag -m "auto-tagged release $tag"
     echo "Ready for release!"
 else
     echo "Aborting"
