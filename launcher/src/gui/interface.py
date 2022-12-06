@@ -24,7 +24,6 @@ class MainUi(QMainWindow):
         )
         self.app_version = APP_INTERNAL_VERSION
         self.lu_version = LAUNCHER_INTERNAL_VERSION
-        self.channel = "alpha"
         self.setWindowTitle("Fundbook Launcher")
         self.setFixedSize(300, 400)
         centerPoint = QDesktopWidget().availableGeometry().center()
@@ -67,8 +66,7 @@ class MainUi(QMainWindow):
         self.install_update_btn.hide()
 
         self.formatted_info_text = f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
-             \nLatest version: {'-' if self.updater.repo_version is None else self.updater.repo_version}\
-             \nChannel: {self.channel}"
+             \nLatest version: {'-' if self.updater.repo_version is None else self.updater.repo_version}"
         self.info = QLabel(self.formatted_info_text)
         self.info.setWordWrap(True)
         self.info.setFont(QFont("Arial", 8))
@@ -98,8 +96,7 @@ class MainUi(QMainWindow):
         if self.updater.new_app_update or self.updater.new_lu_update:
             self.info.setText(
                 f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
-                 \nLatest version: {self.updater.repo_version}\
-                 \nChannel: {self.channel}"
+                 \nLatest version: {self.updater.repo_version}"
             )
             self.blank_info_box.setText(
                 f"Update available:\
@@ -111,8 +108,7 @@ class MainUi(QMainWindow):
             print("no update available")
             self.info.setText(
                 f"Current version: {self.app_version} (app) {self.lu_version} (launcher)\
-                 \nLatest version: {self.updater.repo_version}\
-                 \nChannel: {self.channel}"
+                 \nLatest version: {self.updater.repo_version}"
             )
             self.blank_info_box.setText("No updates available")
 
