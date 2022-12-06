@@ -25,7 +25,7 @@ elif [[ $1 == 'test-prod' ]]; then
     TEST_ENV=prod pytest tests
 elif [[ $1 == 'tag' ]]; then
     echo "Tagging release"
-    ./util/tag_release.sh $2 $3 $4 $5
+    ./util/tag_release.sh $2 $3
 else
     echo "Invalid option"
 fi
