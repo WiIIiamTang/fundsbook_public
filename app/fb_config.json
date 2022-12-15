@@ -5,7 +5,7 @@
         "streamToConsole": true,
         "level": 20
     },
-    "windowFixedSize": true,
+    "windowFixedSize": false,
     "windowDimensions": [
         600,
         720
