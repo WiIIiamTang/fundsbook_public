@@ -20,6 +20,8 @@ from PyQt5.QtWidgets import (
     QPlainTextEdit,
     QProgressBar,
     QSizePolicy,
+    QTabWidget,
+    QSpacerItem,
 )
 from ..workers import (
     EastMoneyFundScraper,
@@ -110,9 +112,20 @@ class MainUi(QMainWindow):
         self.setCentralWidget(self._centralWidget)
         self._centralWidget.setLayout(self.generalLayout)
 
+        self.tabs = QTabWidget()
         self._createDisplay()  # main ui elements
         self._createStatus()  # bottom status bar
         self._createInfoBox()  # lower log box
+        self._createSettings()  # settings tab
+        self._createBuyTab()  # buy tab
+
+        self.tabs.addTab(self.display, "Tasks")
+        self.tabs.addTab(self.buytab, "Buy Funds")
+        # self.tabs.addTab(self.infoTextBox, "Logs")
+        self.tabs.addTab(self.settingstab, "Settings")
+
+        self.generalLayout.addWidget(self.tabs)
+        self.generalLayout.addWidget(self.infoTextBox)
 
         ###########################################################################
         # Thread pool
@@ -128,6 +141,95 @@ class MainUi(QMainWindow):
         ###########################################################################
         # Load user settings
         self._loadPreferences()
+
+    def _createBuyTab(self):
+        self.buytab = QWidget()
+
+        t = self.create_t("buy-funds")
+        buy_label = QLabel(t("Buy funds"), parent=self.display)
+        buy_label.setStyleSheet(
+            "padding-top: 10px; border-top: 2px solid gray; font-size: 14px"
+        )
+
+        buy_funds_layout = QGridLayout()
+        buy_funds = self.buytab
+        buy_funds_layout.addWidget(buy_label, 0, 0, 1, 3)
+
+        self.fund_id_box = QLineEdit(buy_funds)
+        self.fund_id_box.setPlaceholderText(t("Fund id"))
+        self.amount_box = QLineEdit(buy_funds)
+        self.amount_box.setPlaceholderText(t("Amount $"))
+        self.date_box = QLineEdit(buy_funds)
+        self.date_box.setPlaceholderText(t("Date"))
+        self.buy_button = QPushButton(t("Buy"), parent=buy_funds)
+        self.buy_button.clicked.connect(self.buy_funds)
+
+        buy_funds_layout.addWidget(self.fund_id_box, 1, 0)
+        buy_funds_layout.addWidget(self.amount_box, 1, 1)
+        buy_funds_layout.addWidget(self.date_box, 1, 2)
+        buy_funds_layout.addWidget(self.buy_button, 2, 1)
+
+        # Add spacer
+        buy_funds_layout.addItem(QSpacerItem(20, 200), 3, 0)
+
+        buy_funds.setLayout(buy_funds_layout)
+
+    def _createSettings(self):
+        t = self.create_t("settings")
+        self.settingstab = QWidget()
+
+        settings_label = QLabel(
+            t("Settings (**requires restart)"), parent=self.settingstab
+        )
+        # settings_label.setStyleSheet(
+        #     "padding-top: 10px; border-top: 2px solid gray; font-size: 14px"
+        # )
+
+        settings_layout_grid = QGridLayout()
+        settings_layout_grid.addWidget(settings_label, 0, 0, 1, 5)
+        settings = self.settingstab
+
+        self.driver_startup = QCheckBox(
+            t("**Start driver automatically"), parent=self.settingstab
+        )
+        self.setting_export_data = QCheckBox(
+            t("Export data to JSON at end of updates"), parent=self.settingstab
+        )
+        self.setting_request_pause = QLineEdit(self.display)
+        self.setting_request_pause.setText("5")
+        self.setting_request_pause.setFixedWidth(50)
+        self.language_selector = QComboBox(parent=self.settingstab)
+        self.language_selector.setFixedWidth(100)
+        self.language_selector.addItems(["English", "Chinese", "French"])
+        self.setting_funds = QCheckBox(
+            t("Run updates on Funds sheet (基金日记)"), parent=self.settingstab
+        )
+        self.setting_rankings = QCheckBox(
+            t("Run updates on Rankings sheet (基金排队)"), parent=self.settingstab
+        )
+        self.setting_top50 = QCheckBox(
+            t("Run updates on all top50 sheets (各类基金前50名)"), parent=self.settingstab
+        )
+        self.theme = QCheckBox(t("**Dark theme"), parent=self.settingstab)
+
+        settings_layout_grid.addWidget(self.driver_startup, 1, 0)
+        settings_layout_grid.addWidget(self.setting_export_data, 2, 0)
+        settings_layout_grid.addWidget(
+            QLabel(t("**Web scraper pause duration between requests")), 3, 0
+        )
+        settings_layout_grid.addWidget(self.setting_request_pause, 3, 1)
+        settings_layout_grid.addWidget(
+            QLabel(t("**Language"), parent=self.settingstab), 4, 0, 1, 1
+        )
+        settings_layout_grid.addWidget(self.language_selector, 5, 0, 2, 1)
+        settings_layout_grid.addWidget(self.theme, 7, 0, 1, 1)
+        settings_layout_grid.addWidget(self.setting_funds, 8, 0)
+        settings_layout_grid.addWidget(self.setting_rankings, 9, 0)
+        settings_layout_grid.addWidget(self.setting_top50, 10, 0)
+
+        settings_layout_grid.setHorizontalSpacing(10)
+        settings_layout_grid.addItem(QSpacerItem(20, 100), 11, 0)
+        settings.setLayout(settings_layout_grid)
 
     def _createDisplay(self):
         # The main display will be a VBox
@@ -217,89 +319,89 @@ class MainUi(QMainWindow):
         display_layout.addWidget(self.stop_btn, 1)
 
         # Buy funds
-        t = self.create_t("buy-funds")
-        buy_label = QLabel(t("Buy funds"), parent=self.display)
-        buy_label.setStyleSheet(
-            "padding-top: 10px; border-top: 2px solid gray; font-size: 14px"
-        )
-        display_layout.addWidget(buy_label, 1)
+        # t = self.create_t("buy-funds")
+        # buy_label = QLabel(t("Buy funds"), parent=self.display)
+        # buy_label.setStyleSheet(
+        #     "padding-top: 10px; border-top: 2px solid gray; font-size: 14px"
+        # )
+        # display_layout.addWidget(buy_label, 1)
 
-        buy_funds_layout = QGridLayout()
-        buy_funds = QWidget(self.display)
+        # buy_funds_layout = QGridLayout()
+        # buy_funds = QWidget(self.display)
 
-        self.fund_id_box = QLineEdit(buy_funds)
-        self.fund_id_box.setPlaceholderText(t("Fund id"))
-        self.amount_box = QLineEdit(buy_funds)
-        self.amount_box.setPlaceholderText(t("Amount $"))
-        self.date_box = QLineEdit(buy_funds)
-        self.date_box.setPlaceholderText(t("Date"))
-        self.buy_button = QPushButton(t("Buy"), parent=buy_funds)
-        self.buy_button.clicked.connect(self.buy_funds)
+        # self.fund_id_box = QLineEdit(buy_funds)
+        # self.fund_id_box.setPlaceholderText(t("Fund id"))
+        # self.amount_box = QLineEdit(buy_funds)
+        # self.amount_box.setPlaceholderText(t("Amount $"))
+        # self.date_box = QLineEdit(buy_funds)
+        # self.date_box.setPlaceholderText(t("Date"))
+        # self.buy_button = QPushButton(t("Buy"), parent=buy_funds)
+        # self.buy_button.clicked.connect(self.buy_funds)
 
-        buy_funds_layout.addWidget(self.fund_id_box, 0, 0)
-        buy_funds_layout.addWidget(self.amount_box, 0, 1)
-        buy_funds_layout.addWidget(self.date_box, 0, 2)
-        buy_funds_layout.addWidget(self.buy_button, 1, 1)
+        # buy_funds_layout.addWidget(self.fund_id_box, 0, 0)
+        # buy_funds_layout.addWidget(self.amount_box, 0, 1)
+        # buy_funds_layout.addWidget(self.date_box, 0, 2)
+        # buy_funds_layout.addWidget(self.buy_button, 1, 1)
 
-        buy_funds.setLayout(buy_funds_layout)
-        display_layout.addWidget(buy_funds, 1)
+        # buy_funds.setLayout(buy_funds_layout)
+        # display_layout.addWidget(buy_funds, 1)
 
         # settings menu
-        t = self.create_t("settings")
-        settings_label = QLabel(t("Settings (**requires restart)"), parent=self.display)
-        settings_label.setStyleSheet(
-            "padding-top: 10px; border-top: 2px solid gray; font-size: 14px"
-        )
-        display_layout.addWidget(settings_label, 1)
+        # t = self.create_t("settings")
+        # settings_label = QLabel(t("Settings (**requires restart)"), parent=self.display)
+        # settings_label.setStyleSheet(
+        #     "padding-top: 10px; border-top: 2px solid gray; font-size: 14px"
+        # )
+        # display_layout.addWidget(settings_label, 1)
 
-        settings_layout = QGridLayout()
-        settings = QWidget(self.display)
+        # settings_layout = QGridLayout()
+        # settings = QWidget(self.display)
 
-        self.driver_startup = QCheckBox(
-            t("**Start driver automatically"), parent=self.display
-        )
-        self.setting_export_data = QCheckBox(
-            t("Export data to JSON at end of updates"), parent=self.display
-        )
-        self.setting_request_pause = QLineEdit(self.display)
-        self.setting_request_pause.setText("5")
-        self.setting_request_pause.setFixedWidth(50)
-        self.language_selector = QComboBox(parent=self.display)
-        self.language_selector.setFixedWidth(100)
-        self.language_selector.addItems(["English", "Chinese", "French"])
-        self.setting_funds = QCheckBox(
-            t("Run updates on Funds sheet (基金日记)"), parent=self.display
-        )
-        self.setting_rankings = QCheckBox(
-            t("Run updates on Rankings sheet (基金排队)"), parent=self.display
-        )
-        self.setting_top50 = QCheckBox(
-            t("Run updates on all top50 sheets (各类基金前50名)"), parent=self.display
-        )
+        # self.driver_startup = QCheckBox(
+        #     t("**Start driver automatically"), parent=self.display
+        # )
+        # self.setting_export_data = QCheckBox(
+        #     t("Export data to JSON at end of updates"), parent=self.display
+        # )
+        # self.setting_request_pause = QLineEdit(self.display)
+        # self.setting_request_pause.setText("5")
+        # self.setting_request_pause.setFixedWidth(50)
+        # self.language_selector = QComboBox(parent=self.display)
+        # self.language_selector.setFixedWidth(100)
+        # self.language_selector.addItems(["English", "Chinese", "French"])
+        # self.setting_funds = QCheckBox(
+        #     t("Run updates on Funds sheet (基金日记)"), parent=self.display
+        # )
+        # self.setting_rankings = QCheckBox(
+        #     t("Run updates on Rankings sheet (基金排队)"), parent=self.display
+        # )
+        # self.setting_top50 = QCheckBox(
+        #     t("Run updates on all top50 sheets (各类基金前50名)"), parent=self.display
+        # )
 
-        settings_layout.addWidget(self.driver_startup, 0, 0)
-        settings_layout.addWidget(self.setting_export_data, 1, 0)
-        settings_layout.addWidget(
-            QLabel(
-                t("**Web scraper pause duration between requests"), parent=self.display
-            ),
-            2,
-            0,
-            1,
-            1,
-        )
-        settings_layout.addWidget(self.setting_request_pause, 3, 0)
-        settings_layout.addWidget(
-            QLabel(t("**Language"), parent=self.display), 0, 2, 1, 1
-        )
-        settings_layout.addWidget(self.language_selector, 1, 2, 2, 1)
-        settings_layout.addWidget(self.setting_funds, 0, 1)
-        settings_layout.addWidget(self.setting_rankings, 1, 1)
-        settings_layout.addWidget(self.setting_top50, 2, 1)
+        # settings_layout.addWidget(self.driver_startup, 0, 0)
+        # settings_layout.addWidget(self.setting_export_data, 1, 0)
+        # settings_layout.addWidget(
+        #     QLabel(
+        #         t("**Web scraper pause duration between requests"), parent=self.display
+        #     ),
+        #     2,
+        #     0,
+        #     1,
+        #     1,
+        # )
+        # settings_layout.addWidget(self.setting_request_pause, 3, 0)
+        # settings_layout.addWidget(
+        #     QLabel(t("**Language"), parent=self.display), 0, 2, 1, 1
+        # )
+        # settings_layout.addWidget(self.language_selector, 1, 2, 2, 1)
+        # settings_layout.addWidget(self.setting_funds, 0, 1)
+        # settings_layout.addWidget(self.setting_rankings, 1, 1)
+        # settings_layout.addWidget(self.setting_top50, 2, 1)
 
-        settings_layout.setHorizontalSpacing(20)
-        settings.setLayout(settings_layout)
-        display_layout.addWidget(settings, 1)
+        # settings_layout.setHorizontalSpacing(20)
+        # settings.setLayout(settings_layout)
+        # display_layout.addWidget(settings, 1)
 
         # add the main display to the general layout
         self.display.setLayout(display_layout)
@@ -311,7 +413,7 @@ class MainUi(QMainWindow):
         self.infoTextBox.resize(1024, 100)
         self.infoTextBox.setFixedHeight(100)
         self.infoTextBox.setReadOnly(True)
-        self.generalLayout.addWidget(self.infoTextBox)
+        # self.generalLayout.addWidget(self.infoTextBox)
 
     def _createStatus(self):
         self.status = QStatusBar()
@@ -361,6 +463,7 @@ class MainUi(QMainWindow):
         ) as f:
             settings = json.load(f)
             settings["startDriverOnStartup"] = self.driver_startup.isChecked()
+            settings["darkTheme"] = self.theme.isChecked()
             settings["exportDataAtEnd"] = self.setting_export_data.isChecked()
             settings["runFunds"] = self.setting_funds.isChecked()
             settings["runRankings"] = self.setting_rankings.isChecked()
@@ -387,6 +490,7 @@ class MainUi(QMainWindow):
         self.setting_funds.setChecked(settings["runFunds"])
         self.setting_rankings.setChecked(settings["runRankings"])
         self.setting_top50.setChecked(settings["runTop50"])
+        self.theme.setChecked(settings["darkTheme"])
         self.language_selector.setCurrentIndex(
             ["en", "cn", "fr"].index(settings["defaultLang"])
         )

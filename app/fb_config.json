@@ -7,16 +7,17 @@
     },
     "windowFixedSize": false,
     "windowDimensions": [
-        600,
-        720
+        500,
+        500
     ],
     "defaultWorkbookName": "FundsBook.xlsm",
     "driver": "chrome",
     "startDriverOnStartup": false,
-    "defaultLang": "en",
+    "defaultLang": "cn",
     "runFunds": true,
     "runRankings": true,
     "runTop50": true,
     "exportDataAtEnd": false,
-    "requestPause": 5
+    "requestPause": 5,
+    "darkTheme": false
 }

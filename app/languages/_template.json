@@ -1,52 +1,32 @@
 {
-    "workbook-intro": {
-        "Choose the workbook and click run to start the scraper."
-        : "",
-        "Choose excel workbook (.xlsm)"
-        : "",
-        "Selected file"
-        : ""
-    },
-    "core": {
-        "Run scraper and update sheets"
-        : "",
-        "Start web driver"
-        : "",
-        "Stop web driver"
-        : "",
-        "Progress"
-        : "",
-        "Stop"
-        : ""
-    },
-    "buy-funds": {
-        "Buy funds"
-        : "",
-        "Fund id"
-        : "",
-        "Amount $"
-        : "",
-        "Date"
-        : "",
-        "Buy"
-        : ""
-    },
-    "settings": {
-        "Settings (**requires restart)"
-        : "",
-        "**Start driver automatically"
-        : "",
-        "Export data to JSON at end of updates"
-        : "",
-        "Run updates on Funds sheet (基金日记)"
-        : "",
-        "Run updates on Rankings sheet (基金排队)"
-        : "",
-        "Run updates on all top50 sheets (前50名)"
-        : "",
-        "**Web scraper pause duration between requests"
-        : "",
-        "**Language"
-        : ""
-    }
+  "workbook-intro": {
+    "Choose the workbook and click run to start the scraper.": "",
+    "Choose excel workbook (.xlsm)": "",
+    "Selected file": ""
+  },
+  "core": {
+    "Run scraper and update sheets": "",
+    "Start web driver": "",
+    "Stop web driver": "",
+    "Progress": "",
+    "Stop": ""
+  },
+  "buy-funds": {
+    "Buy funds": "",
+    "Fund id": "",
+    "Amount $": "",
+    "Date": "",
+    "Buy": ""
+  },
+  "settings": {
+    "Settings (**requires restart)": "",
+    "**Start driver automatically": "",
+    "Export data to JSON at end of updates": "",
+    "Run updates on Funds sheet (基金日记)": "",
+    "Run updates on Rankings sheet (基金排队)": "",
+    "Run updates on all top50 sheets (前50名)": "",
+    "**Web scraper pause duration between requests": "",
+    "**Language": "",
+    "**Dark theme": ""
+  }
 }

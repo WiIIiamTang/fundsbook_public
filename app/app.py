@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from datetime import datetime
+import qdarkstyle
 import sys
 import os
 import logging
@@ -51,6 +52,12 @@ def main():
         request_pause=settings["requestPause"],
         driver=settings["driver"],
     )
+    theme = qdarkstyle.load_stylesheet(
+        palette=qdarkstyle.dark.palette.DarkPalette
+        if settings["darkTheme"]
+        else qdarkstyle.light.palette.LightPalette
+    )
+    app.setStyleSheet(theme)
     ui.show()
     app.exit(app.exec_())
 
