@@ -27,6 +27,8 @@
     "Run updates on all top50 sheets (前50名)": "",
     "**Web scraper pause duration between requests": "",
     "**Language": "",
-    "**Dark theme": ""
+    "**Dark theme": "",
+    "**Number of topx funds to scrape": "",
+    "**Window size (width x height)": ""
   }
 }

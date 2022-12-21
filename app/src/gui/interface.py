@@ -170,7 +170,7 @@ class MainUi(QMainWindow):
         buy_funds_layout.addWidget(self.buy_button, 2, 1)
 
         # Add spacer
-        buy_funds_layout.addItem(QSpacerItem(20, 200), 3, 0)
+        buy_funds_layout.addItem(QSpacerItem(20, 300), 3, 0)
 
         buy_funds.setLayout(buy_funds_layout)
 
@@ -195,7 +195,7 @@ class MainUi(QMainWindow):
         self.setting_export_data = QCheckBox(
             t("Export data to JSON at end of updates"), parent=self.settingstab
         )
-        self.setting_request_pause = QLineEdit(self.display)
+        self.setting_request_pause = QLineEdit(self.settingstab)
         self.setting_request_pause.setText("5")
         self.setting_request_pause.setFixedWidth(50)
         self.language_selector = QComboBox(parent=self.settingstab)
@@ -212,6 +212,18 @@ class MainUi(QMainWindow):
         )
         self.theme = QCheckBox(t("**Dark theme"), parent=self.settingstab)
 
+        self.setting_top50_number = QLineEdit(self.settingstab)
+        self.setting_top50_number.setText("50")
+        self.setting_top50_number.setFixedWidth(50)
+
+        self.setting_width = QLineEdit(self.settingstab)
+        self.setting_width.setText("")
+        self.setting_width.setFixedWidth(100)
+
+        self.setting_height = QLineEdit(self.settingstab)
+        self.setting_height.setText("")
+        self.setting_height.setFixedWidth(100)
+
         settings_layout_grid.addWidget(self.driver_startup, 1, 0)
         settings_layout_grid.addWidget(self.setting_export_data, 2, 0)
         settings_layout_grid.addWidget(
@@ -226,9 +238,21 @@ class MainUi(QMainWindow):
         settings_layout_grid.addWidget(self.setting_funds, 8, 0)
         settings_layout_grid.addWidget(self.setting_rankings, 9, 0)
         settings_layout_grid.addWidget(self.setting_top50, 10, 0)
+        settings_layout_grid.addWidget(
+            QLabel(t("**Number of topx funds to scrape"), parent=self.settingstab),
+            11,
+            0,
+        )
+        settings_layout_grid.addWidget(self.setting_top50_number, 11, 1)
+
+        settings_layout_grid.addWidget(
+            QLabel(t("**Window size (width x height)"), parent=self.settingstab), 12, 0
+        )
+        settings_layout_grid.addWidget(self.setting_width, 12, 1)
+        settings_layout_grid.addWidget(self.setting_height, 12, 2)
 
         settings_layout_grid.setHorizontalSpacing(10)
-        settings_layout_grid.addItem(QSpacerItem(20, 100), 11, 0)
+        settings_layout_grid.addItem(QSpacerItem(20, 100), 13, 0)
         settings.setLayout(settings_layout_grid)
 
     def _createDisplay(self):
@@ -472,6 +496,9 @@ class MainUi(QMainWindow):
                 self.language_selector.itemText(self.language_selector.currentIndex())
             ]
             settings["requestPause"] = int(self.setting_request_pause.text())
+            settings["windowDimensions"][0] = int(self.setting_width.text())
+            settings["windowDimensions"][1] = int(self.setting_height.text())
+            settings["topx"] = int(self.setting_top50_number.text())
 
         with open(
             os.path.join(BASE_PATH, "fb_config.json"), "w", encoding="utf-8"
@@ -495,6 +522,9 @@ class MainUi(QMainWindow):
             ["en", "cn", "fr"].index(settings["defaultLang"])
         )
         self.setting_request_pause.setText(str(settings["requestPause"]))
+        self.setting_width.setText(str(settings["windowDimensions"][0]))
+        self.setting_height.setText(str(settings["windowDimensions"][1]))
+        self.setting_top50_number.setText(str(settings["topx"]))
 
     def getfile(self):
         """Chooses a file and sets the text box to the path of the file"""
@@ -542,6 +572,7 @@ class MainUi(QMainWindow):
                 self.setting_funds.isChecked(),
                 self.setting_rankings.isChecked(),
                 self.setting_top50.isChecked(),
+                int(self.setting_top50_number.text()),
             )
 
             # connect the FINISHED signal

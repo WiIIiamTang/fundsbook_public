@@ -19,5 +19,6 @@
     "runTop50": true,
     "exportDataAtEnd": false,
     "requestPause": 5,
-    "darkTheme": false
+    "darkTheme": true,
+    "topx": 50
 }

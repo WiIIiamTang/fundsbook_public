@@ -27,6 +27,8 @@
     "Run updates on all top50 sheets (各类基金前50名)": "更新前50名基金排队",
     "**Web scraper pause duration between requests": "爬虫抓取数据间歇时间(10秒左右即可)",
     "**Language": "**选择语言（注：英、中、法）",
-    "**Dark theme": ""
+    "**Dark theme": "**Dark theme",
+    "**Number of topx funds to scrape": "**Number of topx funds to scrape",
+    "**Window size (width x height)": ":**Window size (width x height)"
   }
 }
