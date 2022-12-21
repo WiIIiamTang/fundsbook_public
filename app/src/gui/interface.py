@@ -254,7 +254,7 @@ class MainUi(QMainWindow):
         self.choose_btn.clicked.connect(self.getfile)
         self.choose_btn.setStyleSheet("color: red; font-size: 14px")
         self.choose_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        display_layout.addWidget(self.choose_btn, 4)
+        display_layout.addWidget(self.choose_btn, 2)
 
         # File selection text box
         display_layout.addWidget(QLabel(t("Selected file")))
