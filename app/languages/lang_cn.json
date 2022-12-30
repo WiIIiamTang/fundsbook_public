@@ -28,7 +28,7 @@
     "**Web scraper pause duration between requests": "爬虫抓取数据间歇时间(10秒左右即可)",
     "**Language": "**选择语言（注：英、中、法）",
     "**Dark theme": "**黑色底主题",
-    "**Number of top funds to scrape": "**排名基金数目",
+    "**Number of topx funds to scrape": "**排名基金数目",
     "**Window size (width x height)": ":**本视窗尺寸 (宽 x 高)"
   }
 }

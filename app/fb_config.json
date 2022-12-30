@@ -13,7 +13,7 @@
     "defaultWorkbookName": "FundsBook.xlsm",
     "driver": "chrome",
     "startDriverOnStartup": false,
-    "defaultLang": "en",
+    "defaultLang": "cn",
     "runFunds": true,
     "runRankings": true,
     "runTop50": true,
