@@ -1,6 +1,6 @@
 {
   "workbook-intro": {
-    "Choose the workbook and click run to start the scraper.": "本程序的目的有2个：（1）更新Excel表格中相关数据，包括基金每天的净值；（2）填写新的申购数据。在每次完成数据更新后，打开Excel表格即可查看全部基金的总盈亏情况和每只基金单独的盈亏情况。",
+    "Choose the workbook and click run to start the scraper.": "本程序更新Excel表格基金每天的净值及基金排名。",
     "Choose excel workbook (.xlsx)": "第一步：点击此处，从电脑中选取所用Excel文件(FundsBook.xlsm)",
     "Selected file": "当前所用文件名路径："
   },
@@ -27,8 +27,8 @@
     "Run updates on all top50 sheets (各类基金前50名)": "更新前50名基金排队",
     "**Web scraper pause duration between requests": "爬虫抓取数据间歇时间(10秒左右即可)",
     "**Language": "**选择语言（注：英、中、法）",
-    "**Dark theme": "**Dark theme",
-    "**Number of topx funds to scrape": "**Number of topx funds to scrape",
-    "**Window size (width x height)": ":**Window size (width x height)"
+    "**Dark theme": "**黑色底主题",
+    "**Number of top funds to scrape": "**排名基金数目",
+    "**Window size (width x height)": ":**本视窗尺寸 (宽 x 高)"
   }
 }
